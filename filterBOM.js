@@ -4,6 +4,7 @@ function uniqueComponents(components) {
   const uniques = [];
   seen = {};
   for (const component of components) {
+    component.scope = "required";
     seen[component.purl] = component;
   }
   for (const purl in seen) {

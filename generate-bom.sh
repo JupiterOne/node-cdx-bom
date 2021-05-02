@@ -11,9 +11,13 @@ ORIGROOT="$PWD"
 PROJROOT="${1:-$PWD}"
 [ ! -d "$PROJROOT" ] && fail "Couldn't find $PROJROOT or volume not mounted!"
 cd "$PROJROOT" || fail "Couldn't switch to $PROJROOT directory!"
-OUTPUT_BOMFILE="$PROJROOT/bom.json"
+OUTPUT_BOMFILE="${2:-$PROJROOT/bom.json}"
 
 [ ! -d node_modules ] && fail "You must first install NPM packages!"
+
+OUTPUT_DIR="$(dirname $OUTPUT_BOMFILE)"
+mkdir -p "$OUTPUT_DIR" || fail "Couldn't create output dir for $OUTPUT_BOMFILE"
+echo "Generating $OUTPUT_BOMFILE..."
 
 echo "Finding packages..."
 find . -name package.json | grep -v node_modules | grep -v deploy | while read dir; do
@@ -27,7 +31,6 @@ done
 
 echo
 echo "Merging BOM file(s)..."
-cd "$PROJROOT"
 cyclonedx merge --output-format json --output-file "$OUTPUT_BOMFILE" --input-files $(paste -s -d ' ' <(find "$PROJROOT" -name bom.xml))
 
 echo
@@ -38,7 +41,7 @@ echo
 echo "Deduping BOM file..."
 echo "Before: $(jq '.components | length' "$OUTPUT_BOMFILE") packages"
 node "$ORIGROOT/filterBOM.js" "${OUTPUT_BOMFILE}"
-echo "After: $(jq '.components | length' "$OUTPUT_BOMFILE") packages"
+echo " After: $(jq '.components | length' "$OUTPUT_BOMFILE") packages"
 
 echo
 echo "Analyzing BOM..."
