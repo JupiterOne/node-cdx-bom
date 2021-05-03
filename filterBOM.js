@@ -23,7 +23,9 @@ async function run() {
   const outfile = process.argv[3] || infile;
 
   const data = require(infile);
+  console.log('Before: ' + data.components.length + ' components.');
   data.components = uniqueComponents(data.components);
+  console.log(' After: ' + data.components.length + ' components.');
   fs.writeFileSync(outfile, JSON.stringify(data, null, 2));
 }
 

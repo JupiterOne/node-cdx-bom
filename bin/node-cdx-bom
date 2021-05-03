@@ -1,0 +1,68 @@
+#!/bin/bash
+set -euo pipefail
+
+main() {
+  echo "Finding packages..."
+  # generate bom.xml everywhere node_modules and package.json are found together,
+  # but do not descend into the node_modules dirs themselves. Also, ignore paths related
+  # to deployment (these packages are inherently devDeps).
+  find . -name package.json | grep -v node_modules | grep -v deploy | while read dir; do
+    cd "$projroot"
+    cd "$(dirname $dir)"
+    if [ "$(ls node_modules 2>/dev/null)" ]; then
+      # node_modules dir is present and not empty
+      echo "Generating BOM for $dir..."
+      "$origroot/../node_modules/@cyclonedx/bom/bin/cyclonedx-bom"
+    fi
+  done
+
+  echo
+  echo "Merging BOM file(s)..."
+  cyclonedx merge --output-format json --output-file "$output_bomfile" --input-files $(paste -s -d ' ' <(find "$projroot" -name bom.xml))
+
+  echo
+  echo "Cleanup intermediate files..."
+  find . -name bom.xml -exec rm {} \;
+
+  echo
+  echo "Deduping BOM file..."
+  node "$origroot/../filterBOM.js" "${output_bomfile}"
+
+  echo
+  echo "Analyzing BOM..."
+  cyclonedx analyze --input-file "$output_bomfile" --multiple-component-versions
+
+  echo
+  echo "Validating BOM..."
+  cyclonedx validate --input-format json_v1_2 --input-file "$output_bomfile" --fail-on-errors
+
+  echo "Generated BOM file $output_bomfile - OK"
+}
+
+fail() {
+  echo "$*"
+  exit 2
+}
+
+if [ "$(uname -s)" = "Darwin" ]; then
+  readlink="greadlink"
+else
+  readlink="readlink"
+fi
+
+which cyclonedx >/dev/null 2>&1 || fail "Missing cyclonedx-cli dependency: 'cyclonedx' not in PATH!"
+which $readlink >/dev/null 2>&1 || fail "Missing readlink dependency: 'readlink' not in PATH!"
+
+origroot="$(dirname $($readlink -f $0))"
+projroot="${1:-$PWD}"
+[ ! -d "$projroot" ] && fail "Couldn't find $projroot or volume not mounted!"
+cd "$projroot" || fail "Couldn't switch to $projroot directory!"
+output_bomfile="${2:-$projroot/bom.json}"
+
+[ ! -d node_modules ] && fail "You must first install NPM packages!"
+
+output_dir="$(dirname $output_bomfile)"
+mkdir -p "$output_dir" || fail "Couldn't create output dir for $output_bomfile"
+echo "Generating $output_bomfile..."
+
+main
