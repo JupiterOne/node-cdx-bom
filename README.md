@@ -1,8 +1,14 @@
 # node-cdx-bom
 
-This project provides a Docker image that may be used to generate a
+This project provides a CLI tool (via NPM and Docker) that may be used to generate a
 [CycloneDX](https://cyclonedx.org) Software Bill-of-Materials (BOM) for a
 NodeJS project/repo.
+
+## Installing from NPM
+
+```
+npm install -g @jupiterone/node-cdx-bom
+```
 
 ## Running node-cdx-bom
 
@@ -10,12 +16,14 @@ Try:
 
 ```
 cd my-project-repo
+node-cdx-bom
+ - or -
 docker run -v $PWD:/src jupiterone/node-cdx-bom /src/bom.json
 ```
 
 This will generate a `bom.json` file in your project root.
 
-NOTE: you must specify `/src` as your volume mount target (`-v $PWD:/src`)!
+NOTE: you must specify `/src` as your Docker volume mount target (`-v $PWD:/src`)!
 
 ## Assumptions
 
@@ -28,3 +36,7 @@ NOTE: you must specify `/src` as your volume mount target (`-v $PWD:/src`)!
 The discovered packages that remain are, therefore, required.  These are
 marked as such by setting the property `scope: 'required'` for each of the
 BOM `components[]`.
+
+## Environment Variables
+
+To override the location of the ignored deploy dir, set the IGNORE_DIR variable.

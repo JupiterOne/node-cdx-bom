@@ -6,7 +6,7 @@ main() {
   # generate bom.xml everywhere node_modules and package.json are found together,
   # but do not descend into the node_modules dirs themselves. Also, ignore paths related
   # to deployment (these packages are inherently devDeps).
-  find . -name package.json | grep -v node_modules | grep -v deploy | while read dir; do
+  find . -name package.json | grep -v node_modules | grep -v $ignoredir | while read dir; do
     cd "$projroot"
     cd "$(dirname $dir)"
     if [ "$(ls node_modules 2>/dev/null)" ]; then
@@ -63,6 +63,8 @@ output_bomfile="${2:-$projroot/bom.json}"
 
 output_dir="$(dirname $output_bomfile)"
 mkdir -p "$output_dir" || fail "Couldn't create output dir for $output_bomfile"
+
+ignoredir=${IGNORE_DIR:-deploy}
 echo "Generating $output_bomfile..."
 
 main
