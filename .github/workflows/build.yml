@@ -1,0 +1,113 @@
+name: Build
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [12.x]
+        os: [ubuntu-latest]
+
+    steps:
+      - id: setup-node
+        name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Check out code repository source code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Verify that Docker image builds
+        run: docker build .
+
+  npm:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: test
+    outputs:
+      didpublishnpm: ${{ steps.build-and-publish.outputs.didpublishnpm }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [12]
+
+    steps:
+      - name: Initialize Output
+        run: echo "::set-output name=didpublishnpm::false"
+
+      - name: Check out repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Check if publish needed
+        run: |
+          name="$(jq -r .name package.json)"
+          npmver="$(npm show $name version || echo v0.0.0)"
+          pkgver="$(jq -r .version package.json)"
+          echo "pkgver=$pkgver" >> $GITHUB_ENV
+          if [ "$npmver" = "$pkgver" ]
+          then
+            echo "Package version ($pkgver) is the same as last published NPM version ($npmver), skipping publish."
+          else
+            echo "Package version ($pkgver) is different from latest NPM version ($npmver), publishing!"
+            echo "shouldpublishnpm=true" >> $GITHUB_ENV
+          fi
+
+      - name: Setup Node
+        if: env.shouldpublishnpm
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Build and Publish
+        id: build-and-publish
+        if: env.shouldpublishnpm
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
+          yarn install
+          npm publish ./dist --access public
+          echo "::set-output name=didpublishnpm::true"
+
+  docker:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [test, npm]
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+
+      - name: Detect Dockerfile changes
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            dockerchanged:
+              - 'Dockerfile'
+      - name: Should Build?
+        if: steps.filter.outputs.dockerchanged == 'true' || needs.npm.outputs.didpublishnpm == 'true'
+        run: |
+          echo "Dockerfile changed, and/or new NPM module published. Need to update Docker image."
+          echo "need_docker_build=true" >> $GITHUB_ENV
+      - name: Login to DockerHub Registry
+        if: env.need_docker_build
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin docker.io
+
+      - name: Build the latest Docker image
+        if: env.need_docker_build
+        run: docker build . --file Dockerfile --tag jupiterone/node-cdx-bom:latest --tag jupiterone/node-cdx-bom:$pkgver
+
+      - name: Push the latest Docker image
+        if: env.need_docker_build
+        run: |
+          docker push jupiterone/node-cdx-bom:latest
+          docker push jupiterone/node-cdx-bom:$pkgver
