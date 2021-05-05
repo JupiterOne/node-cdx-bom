@@ -30,7 +30,7 @@ NOTE: you must specify `/src` as your Docker volume mount target (`-v $PWD:/src`
 ## Assumptions
 
 * You're only interested in generating a BOM for packages you actually use in
-  production--devDeps aren't of interest/in-scope.  These are ignored.
+  production and `devDependencies` aren't of interest/in-scope.  These are ignored.
 * node_modules are present (You've run `npm install` or `yarn install` first.)
 * node_modules of all sub-packages of interest are present (if monorepo)
 * deploy/ packages (if any) are out-of-scope, and should be ignored.
