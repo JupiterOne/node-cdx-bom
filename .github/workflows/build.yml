@@ -74,7 +74,7 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
           yarn install
-          npm publish ./dist --access public
+          npm publish --access public
           echo "::set-output name=didpublishnpm::true"
 
   docker:
