@@ -104,14 +104,13 @@ jobs:
 
       - name: Build the latest Docker image
         if: env.need_docker_build
-        env:
-          PKGVER: ${{ env.pkgver }}
-        run: docker build . --file Dockerfile --tag jupiterone/node-cdx-bom:latest --tag jupiterone/node-cdx-bom:${PKGVER}
+        run: |
+          pkgver="$(jq -r .version package.json)"
+          echo "pkgver=$pkgver" >> $GITHUB_ENV
+          docker build . --file Dockerfile --tag jupiterone/node-cdx-bom:latest --tag jupiterone/node-cdx-bom:$pkgver
 
       - name: Push the latest Docker image
         if: env.need_docker_build
-        env:
-          PKGVER: ${{ env.pkgver }}
         run: |
           docker push jupiterone/node-cdx-bom:latest
-          docker push jupiterone/node-cdx-bom:${PKGVER}
+          docker push jupiterone/node-cdx-bom:${{ env.pkgver }}

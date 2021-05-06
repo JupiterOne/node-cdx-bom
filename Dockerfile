@@ -1,6 +1,6 @@
 FROM node:12
 WORKDIR /opt/jupiterone
-RUN apt-get update && apt-get -y upgrade
+RUN apt-get update
 RUN wget https://github.com/CycloneDX/cyclonedx-cli/releases/download/v0.14.0/cyclonedx-linux-x64 -O /bin/cyclonedx
 RUN chmod +x /bin/cyclonedx
 COPY . .
