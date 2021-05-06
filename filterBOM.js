@@ -24,11 +24,14 @@ async function run() {
   }
   const outfile = process.argv[3] || infile;
 
-  const data = require(infile);
+  const data = JSON.parse(fs.readFileSync(infile, 'utf8'));
   console.log('Before: ' + data.components.length + ' components.');
   data.components = uniqueRequiredComponents(data.components);
   console.log(' After: ' + data.components.length + ' components.');
   fs.writeFileSync(outfile, JSON.stringify(data, null, 2));
 }
 
-run().catch(console.error);
+run().catch(err => {
+  console.error(err);
+  process.exit(2);
+});
