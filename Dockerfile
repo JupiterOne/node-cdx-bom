@@ -5,4 +5,5 @@ RUN wget https://github.com/CycloneDX/cyclonedx-cli/releases/download/v0.14.0/cy
 RUN chmod +x /bin/cyclonedx
 COPY . .
 RUN yarn install
+# Assume that project root is mounted at /src
 ENTRYPOINT ["/opt/jupiterone/bin/node-cdx-bom", "/src"]
