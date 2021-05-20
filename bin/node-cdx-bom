@@ -1,4 +1,7 @@
 #!/bin/bash
+if [ -n "$DEBUG" ]; then
+  set -x
+fi
 set -euo pipefail
 
 main() {
@@ -18,7 +21,8 @@ main() {
 
   echo
   echo "Merging BOM file(s)..."
-  cyclonedx merge --output-format json --output-file "$output_bomfile" --input-files $(paste -s -d ' ' <(find "$projroot" -name bom.xml))
+  local inputfiles="$(paste -s -d ' ' <(find "$projroot" -name bom.xml))"
+  cyclonedx merge --output-format json --output-file "$output_bomfile" --input-files $inputfiles
 
   echo
   echo "Cleanup intermediate files..."
