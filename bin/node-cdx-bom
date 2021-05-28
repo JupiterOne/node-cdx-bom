@@ -12,10 +12,14 @@ main() {
   find . -name package.json | grep -v node_modules | grep -v $ignoredir | while read dir; do
     cd "$projroot"
     cd "$(dirname $dir)"
-    if [ "$(ls node_modules 2>/dev/null)" ]; then
+    if [ "$(ls node_modules 2>/dev/null | wc -l | tr -d ' ')" -gt 0 ]; then
       # node_modules dir is present and not empty
       echo "Generating BOM for $dir..."
       "$origroot/../node_modules/@cyclonedx/bom/bin/cyclonedx-bom"
+      if [ -n "$DEBUG" ]; then
+        ls "$origroot/../node_modules/@cyclonedx/bom/bin/cyclonedx-bom"
+        ls
+      fi
     fi
   done
 
