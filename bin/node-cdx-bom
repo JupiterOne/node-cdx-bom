@@ -15,9 +15,10 @@ main() {
     if [ "$(ls node_modules 2>/dev/null | wc -l | tr -d ' ')" -gt 0 ]; then
       # node_modules dir is present and not empty
       echo "Generating BOM for $dir..."
-      "$origroot/../node_modules/@cyclonedx/bom/bin/cyclonedx-bom"
+      # "$origroot/../node_modules/@cyclonedx/bom/bin/cyclonedx-bom"
+      cyclonedx-bom
       if [ -n "$DEBUG" ]; then
-        ls "$origroot/../node_modules/@cyclonedx/bom/bin/cyclonedx-bom"
+        pwd
         ls
       fi
     fi
