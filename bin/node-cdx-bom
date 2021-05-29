@@ -2,13 +2,14 @@
 if [ -n "$DEBUG" ]; then
   set -x
 fi
-set -euo pipefail
+set -eo pipefail
 
 main() {
   echo "Finding packages..."
   # generate bom.xml everywhere node_modules and package.json are found together,
   # but do not descend into the node_modules dirs themselves. Also, ignore paths related
   # to deployment (these packages are inherently devDeps).
+  generateOK=false
   find . -name package.json | grep -v node_modules | grep -v $ignoredir | while read dir; do
     cd "$projroot"
     cd "$(dirname $dir)"
@@ -16,13 +17,22 @@ main() {
       # node_modules dir is present and not empty
       echo "Generating BOM for $dir..."
       # "$origroot/../node_modules/@cyclonedx/bom/bin/cyclonedx-bom"
-      cyclonedx-bom
+      echo cyclonedx-bom -o $PWD/bom.xml
+      cyclonedx-bom -o $PWD/bom.xml
+      if [ -f $PWD/bom.xml ]; then
+        generateOK=true
+      fi
       if [ -n "$DEBUG" ]; then
         pwd
         ls
       fi
     fi
   done
+
+  if [ ! $generateOK ]; then
+    echo "Error: Unable to generate BOM with cyclonedx-bom. Abort."
+    exit 1
+  fi
 
   echo
   echo "Merging BOM file(s)..."
