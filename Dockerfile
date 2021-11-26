@@ -12,7 +12,7 @@ RUN chmod +x /bin/cyclonedx
 COPY . .
 
 # NPM PACKAGES
-RUN npm install -g @cyclonedx/bom@3.1.1
+RUN npm install -g @cyclonedx/bom@^3.1.1
 RUN npm install --production
 
 USER 10000:10001
