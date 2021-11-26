@@ -9,6 +9,6 @@
     "node-cdx-bom": "./bin/node-cdx-bom"
   },
   "dependencies": {
-    "@cyclonedx/bom": "^2.0.2"
+    "@cyclonedx/bom": "^3.1.1"
   }
 }
