@@ -2,20 +2,25 @@
 # yarn lockfile v1
 
 
-"@cyclonedx/bom@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@cyclonedx/bom/-/bom-2.0.2.tgz#88bf40774aa8049eabc82976bb3f53bc2de16bbc"
-  integrity sha512-UbqlBR0UFInnnt2XCl2MTuVYfqh1h3Rm/yKzd0JPTgmK+9mtuzasJeipMPsJzg14bwBZhL5eileGjPzrt/GUcA==
+"@cyclonedx/bom@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@cyclonedx/bom/-/bom-3.1.1.tgz#94540ceec4e6f5d3f3975197811ae8850bc18b58"
+  integrity sha512-ylLfdavj+cCf7+FHs7sLeT7o3MG3Pr/dyWtzR/L83mx+rN54g/3shKqnYdS/sIYEumI5xrjzGOnw9tZh8XwCxw==
   dependencies:
-    commander "^6.1.0"
-    packageurl-js "^0.0.2"
+    "@xmldom/xmldom" "^0.7.4"
+    commander "^8.1.0"
+    packageurl-js "^0.0.5"
     parse-packagejson-name "^1.0.1"
     prettify-xml "^1.2.0"
     read-installed "^4.0.3"
     ssri "^8.0.0"
-    uuid "^3.3.2"
-    xmlbuilder "^13.0.2"
-    xmldom "^0.3.0"
+    uuid "^8.3.0"
+    xmlbuilder "^15.1.1"
+
+"@xmldom/xmldom@^0.7.4":
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.5.tgz#09fa51e356d07d0be200642b0e4f91d8e6dd408d"
+  integrity sha512-V3BIhmY36fXZ1OtVcI9W+FxQqxVLsPKcNjWigIaa81dLC9IolJl5Mt4Cvhmr0flUnjSpTdrbMTSbXqYqV5dT6A==
 
 asap@^2.0.0:
   version "2.0.6"
@@ -35,10 +40,10 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
-commander@^6.1.0:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
-  integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
+commander@^8.1.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-8.3.0.tgz#4837ea1b2da67b9c616a67afbb0fafee567bca66"
+  integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -158,10 +163,10 @@ once@^1.3.0:
   dependencies:
     wrappy "1"
 
-packageurl-js@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/packageurl-js/-/packageurl-js-0.0.2.tgz#8561a7746ff1fcb8d375705b0a65065a99a8ae3c"
-  integrity sha512-ikc7zy5J/Cgd8DnhauCgD6cPkj2vhybZXuNqP6eiZZNL8YXQYHABGNXMi41Y+mwEGA0ijo3axHFFc0AJ7mjlJA==
+packageurl-js@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/packageurl-js/-/packageurl-js-0.0.5.tgz#a48c9e5ca6855cd23660257ad2b0199593b3373a"
+  integrity sha512-BISQVKLiu7EsWF5Qhx8OvX6K5vOfFcYuQBggFfrF2dHu+/Z2snuabilb0EyLvHZH0XXqbEz20pqFRonTt8z6QA==
 
 parse-packagejson-name@^1.0.1:
   version "1.0.1"
@@ -273,10 +278,10 @@ util-extend@^1.0.1:
   resolved "https://registry.yarnpkg.com/util-extend/-/util-extend-1.0.3.tgz#a7c216d267545169637b3b6edc6ca9119e2ff93f"
   integrity sha1-p8IW0mdUUWljeztu3GypEZ4v+T8=
 
-uuid@^3.3.2:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
-  integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+uuid@^8.3.0:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
@@ -291,15 +296,10 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
-xmlbuilder@^13.0.2:
-  version "13.0.2"
-  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-13.0.2.tgz#02ae33614b6a047d1c32b5389c1fdacb2bce47a7"
-  integrity sha512-Eux0i2QdDYKbdbA6AM6xE4m6ZTZr4G4xF9kahI2ukSEMCzwce2eX9WlTI5J3s+NU7hpasFsr8hWIONae7LluAQ==
-
-xmldom@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.3.0.tgz#e625457f4300b5df9c2e1ecb776147ece47f3e5a"
-  integrity sha512-z9s6k3wxE+aZHgXYxSTpGDo7BYOUfJsIRyoZiX6HTjwpwfS2wpQBQKa2fD+ShLyPkqDYo5ud7KitmLZ2Cd6r0g==
+xmlbuilder@^15.1.1:
+  version "15.1.1"
+  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-15.1.1.tgz#9dcdce49eea66d8d10b42cae94a79c3c8d0c2ec5"
+  integrity sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==
 
 yallist@^4.0.0:
   version "4.0.0"
