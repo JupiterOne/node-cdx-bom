@@ -53,7 +53,6 @@ main() {
 
   echo
   echo "Deduping BOM file..."
-  echo $output_bomfile
   node "$origroot/../filterBOM.js" "${output_bomfile}"
 
   echo
