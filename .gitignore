@@ -11,8 +11,9 @@ work/
 *.bak.*
 *.tmp
 
-package-lock.json
 .npmrc
 
 .vscode/
 gpgkeys
+
+yarn.lock

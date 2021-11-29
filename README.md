@@ -12,6 +12,12 @@ npm install -g @jupiterone/node-cdx-bom
 
 NOTE: this tool relies on [cyclonedx-cli](https://github.com/CycloneDX/cyclonedx-cli/releases). The binary should be installed as `cyclonedx` somewhere in your PATH prior to running the `node-cdx-bom` command.
 
+## Building a docker image
+
+```
+docker build -t jupiterone/node-cdx-bom:latest .
+```
+
 ## Running node-cdx-bom
 
 Try:

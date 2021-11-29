@@ -34,10 +34,18 @@ main() {
     exit 1
   fi
 
+  # This is because cyclonedx will append to the pre-existing
+  # bom file. This is problematic because it creates
+  # an invalid JSON structure. This causes filterBOM.js
+  # to fail.
+  echo
+  echo "Removing pre-existing BOM file if there is one"
+  rm -f $output_bomfile
+
   echo
   echo "Merging BOM file(s)..."
   local inputfiles="$(paste -s -d ' ' <(find "$projroot" -name bom.xml))"
-  cyclonedx merge --output-format json --output-file "$output_bomfile" --input-files $inputfiles
+  cyclonedx merge --output-format json --output-file "$output_bomfile" --input-format xml --input-files $inputfiles
 
   echo
   echo "Cleanup intermediate files..."
@@ -53,7 +61,7 @@ main() {
 
   echo
   echo "Validating BOM..."
-  cyclonedx validate --input-format json_v1_2 --input-file "$output_bomfile" --fail-on-errors
+  cyclonedx validate --input-format json_v1_3 --input-file "$output_bomfile" --fail-on-errors
 
   echo "Generated BOM file $output_bomfile - OK"
 }
