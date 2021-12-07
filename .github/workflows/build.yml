@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        run: yarn
+        run: npm ci
 
       - name: Verify that Docker image builds
         run: docker build .
@@ -73,7 +73,7 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
-          yarn install
+          npm ci
           npm publish --access public
           echo "::set-output name=didpublishnpm::true"
 
