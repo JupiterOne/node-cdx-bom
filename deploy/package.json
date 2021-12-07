@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+      "@jupiterone/terraform-modules": "^21.1.0"
+  }
+}
