@@ -61,7 +61,7 @@ main() {
 
   echo
   echo "Validating BOM..."
-  cyclonedx validate --input-format json_v1_3 --input-file "$output_bomfile"
+  cyclonedx validate --input-format json --input-file "$output_bomfile"
 
   echo "Generated BOM file $output_bomfile - OK"
 }

@@ -1,0 +1,6 @@
+mode: Mainline
+update-build-number: false
+branches: {}
+ignore:
+  sha: []
+merge-message-formats: {}
