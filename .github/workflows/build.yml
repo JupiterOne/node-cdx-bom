@@ -109,7 +109,7 @@ jobs:
 
       - name: Display GitVersion outputs
         run: |
-          echo "SemVer: ${{ steps.gitversion.outputs.ShortSha }}"  
+          echo "ShortSha: ${{ steps.gitversion.outputs.ShortSha }}"  
 
       - name: Build and Tag the Docker image (This commit - ShortSHA)
         run: |
