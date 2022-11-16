@@ -25,9 +25,15 @@ async function run() {
   const outfile = process.argv[3] || infile;
 
   const data = JSON.parse(fs.readFileSync(infile, 'utf8'));
-  console.log('Before: ' + data.components.length + ' components.');
-  data.components = uniqueRequiredComponents(data.components);
-  console.log(' After: ' + data.components.length + ' components.');
+
+  if (data !== undefined && data.components !== undefined) {
+    console.log('Before: ' + data.components.length + ' components.');
+    data.components = uniqueRequiredComponents(data.components);
+    console.log(' After: ' + data.components.length + ' components.');
+  } else {
+    console.log('data.components is empty');
+  }
+  
   fs.writeFileSync(outfile, JSON.stringify(data, null, 2));
 }
 
