@@ -1,6 +1,6 @@
 {
   "name": "node-cdx-bom",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Generate a unique, recursively merged SBOM for NodeJS projects and monorepos.",
   "main": "index.js",
   "author": "Erich Smith <erich.smith@jupiterone.com>",
