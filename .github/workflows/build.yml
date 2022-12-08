@@ -87,8 +87,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Login to DockerHub Registry
-        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin docker.io
+      - name: Login to GitHub Container Registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - uses: actions/setup-dotnet@v2
         with:
@@ -113,21 +113,21 @@ jobs:
 
       - name: Build and Tag the Docker image (This commit - ShortSHA)
         run: |
-          docker build . --file Dockerfile --tag jupiterone/node-cdx-bom:${{ steps.gitversion.outputs.ShortSha }}
+          docker build . --file Dockerfile --tag ghcr.io/jupiterone/node-cdx-bom:${{ steps.gitversion.outputs.ShortSha }}
 
       - name: Push the current Docker image tag
         run: |
-          docker push jupiterone/node-cdx-bom:${{ steps.gitversion.outputs.ShortSha }}
+          docker push ghcr.io/jupiterone/node-cdx-bom:${{ steps.gitversion.outputs.ShortSha }}
 
       - name: Build and Tag the Docker image - Only main branch (Respect version from package.json)
         if: github.ref == 'refs/heads/main'
         run: |
           pkgver="$(jq -r .version package.json)"
           echo "pkgver=$pkgver" >> $GITHUB_ENV
-          docker build . --file Dockerfile --tag jupiterone/node-cdx-bom:latest --tag jupiterone/node-cdx-bom:$pkgver
+          docker build . --file Dockerfile --tag ghcr.io/jupiterone/node-cdx-bom:latest --tag jupiterone/node-cdx-bom:$pkgver
 
       - name: Push the latest and stable Docker image tags
         if: github.ref == 'refs/heads/main'
         run: |
-          docker push jupiterone/node-cdx-bom:latest
-          docker push jupiterone/node-cdx-bom:${{ env.pkgver }}
+          docker push ghcr.io/jupiterone/node-cdx-bom:latest
+          docker push ghcr.io/jupiterone/node-cdx-bom:${{ env.pkgver }}
