@@ -124,7 +124,7 @@ jobs:
         run: |
           pkgver="$(jq -r .version package.json)"
           echo "pkgver=$pkgver" >> $GITHUB_ENV
-          docker build . --file Dockerfile --tag ghcr.io/jupiterone/node-cdx-bom:latest --tag jupiterone/node-cdx-bom:$pkgver
+          docker build . --file Dockerfile --tag ghcr.io/jupiterone/node-cdx-bom:latest --tag ghcr.io/jupiterone/node-cdx-bom:$pkgver
 
       - name: Push the latest and stable Docker image tags
         if: github.ref == 'refs/heads/main'
