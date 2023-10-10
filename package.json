@@ -2,9 +2,13 @@
   "name": "node-cdx-bom",
   "version": "0.2.2",
   "description": "Generate a unique, recursively merged SBOM for NodeJS projects and monorepos.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com///oauth2"
+  },
+  "license": "MIT",
   "main": "index.js",
   "author": "Erich Smith <erich.smith@jupiterone.com>",
-  "license": "MIT",
   "bin": {
     "node-cdx-bom": "./bin/node-cdx-bom"
   },
