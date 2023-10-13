@@ -16,7 +16,7 @@ info:
     monorepos.
   x-cortex-git:
     github:
-      repository: //oauth2
+      repository: JupiterOne/node-cdx-bom
   x-cortex-owners:
     - type: group
       name: JupiterOne/sre
