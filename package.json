@@ -4,7 +4,7 @@
   "description": "Generate a unique, recursively merged SBOM for NodeJS projects and monorepos.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/node-cdx-bom"
+    "url": "https://github.com/JupiterOne/node-cdx-bom"
   },
   "license": "MIT",
   "main": "index.js",
